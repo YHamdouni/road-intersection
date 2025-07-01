@@ -107,6 +107,14 @@ impl Car {
         }
     }
 }
+pub fn get_last_car_dir(cars_vec: &mut Vec<Car>, dir: Direction) -> Option<Car> {
+    cars_vec
+        .iter()
+        .rev()
+        .find(|car| car.dir == dir)
+        .cloned()
+}
+
 pub fn push_car(
     cars_vec: &mut Vec<Car>,
     car: Car,
@@ -119,7 +127,7 @@ pub fn push_car(
     let can_push = if cars_vec.is_empty() {
         true
     } else {
-        let last_down_car = get_last_car(cars_vec, dir);
+        let last_down_car = get_last_car_dir(cars_vec, dir);
         match last_down_car {
             Some(last_car) => {
                 match (check_y, check_x) {
@@ -176,10 +184,14 @@ pub fn key_r(cars_vec: &mut Vec<Car>) {
     (vec[choice])(cars_vec); // Call only the randomly chosen function
 }
 
-pub fn get_last_car(cars_vec: &mut Vec<Car>, dir: Direction) -> Option<Car> {
-    cars_vec
-        .iter()
-        .rev()
-        .find(|car| car.dir == dir)
-        .cloned()
+pub fn can_move(cars_vec: &mut Vec<Car>, new_car: Car) -> bool {
+    match new_car.dir {
+        Direction::Top=>{
+            let is = cars_vec.iter().rev().find(|car| car == car).cloned();
+        }
+        Direction::Down=>{}
+        Direction::Left=>{}
+        Direction::Right=>{}
+    }
+    false
 }
