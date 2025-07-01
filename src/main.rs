@@ -44,7 +44,9 @@ pub fn main() {
         for car in &mut cars_vec {
             canvas.set_draw_color(car.color);
             car.move_car();
-            car.redirect();
+            if !car.turned{
+                car.redirect();
+            }
             let _ = canvas.fill_rect(Rect::new(car.x, car.y, 30, 30));
         }
         cars_vec.retain(|car| car.y <= 630 && car.y >= -30 && car.x <= 830 && car.x >= -30);
