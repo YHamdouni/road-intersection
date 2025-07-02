@@ -192,17 +192,17 @@ pub fn push_car(
 }
 
 pub fn key_up(cars_vec: &mut Vec<Car>) {
-    let car = Car::new(410, 560, Direction::Down, Car::random_c());
+    let car = Car::new(410, 600, Direction::Down, Car::random_c());
     push_car(cars_vec, car, Some(510), None, Direction::Down);
 }
 
 pub fn key_down(cars_vec: &mut Vec<Car>) {
-    let car = Car::new(360, 0, Direction::Top, Car::random_c());
+    let car = Car::new(360, -30, Direction::Top, Car::random_c());
     push_car(cars_vec, car, Some(60), None, Direction::Top);
 }
 
 pub fn key_left(cars_vec: &mut Vec<Car>) {
-    let car = Car::new(0, 310, Direction::Right, Car::random_c());
+    let car = Car::new(-30, 310, Direction::Right, Car::random_c());
     push_car(cars_vec, car, None, Some(60), Direction::Right);
 }
 

@@ -35,12 +35,35 @@ pub fn main() {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
 
+        canvas.set_draw_color(Color::GREY);
+        let _ = canvas.fill_rect(Rect::new(0, 250, 800, 100));
+        let _ = canvas.fill_rect(Rect::new(350, 0, 100, 600));
         canvas.set_draw_color(Color::WHITE);
         // Roads
         let _ = canvas.draw_line(Point::new(400, 0), Point::new(400, 600));
+        for i in (0..=600).step_by(15) {
+            if i < 250 || i > 350 {
+                canvas.set_draw_color(Color::GRAY);
+                let _ = canvas.draw_line(Point::new(400, i), Point::new(400, i + 2));
+            } else {
+                canvas.set_draw_color(Color::GRAY);
+                let _ = canvas.draw_line(Point::new(400, 250), Point::new(400, 350));
+            }
+        }
+        canvas.set_draw_color(Color::WHITE);
+        let _ = canvas.draw_line(Point::new(0, 300), Point::new(800, 300));
+        for i in (0..=800).step_by(15) {
+            if i < 350 || i > 450 {
+                canvas.set_draw_color(Color::GRAY);
+                let _ = canvas.draw_line(Point::new(i, 300), Point::new(i + 2, 300));
+            } else {
+                canvas.set_draw_color(Color::GRAY);
+                let _ = canvas.draw_line(Point::new(350, 300), Point::new(450, 300));
+            }
+        }
+        canvas.set_draw_color(Color::WHITE);
         let _ = canvas.draw_line(Point::new(350, 0), Point::new(350, 600));
         let _ = canvas.draw_line(Point::new(450, 0), Point::new(450, 600));
-        let _ = canvas.draw_line(Point::new(0, 300), Point::new(800, 300));
         let _ = canvas.draw_line(Point::new(0, 250), Point::new(800, 250));
         let _ = canvas.draw_line(Point::new(0, 350), Point::new(800, 350));
 
@@ -51,7 +74,7 @@ pub fn main() {
         } else {
             canvas.set_draw_color(Color::RED);
         }
-        let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
+        let _ = canvas.fill_rect(Rect::new(318, 218, 30, 30));
 
         // RIGHT light
         if lights.lights_right {
@@ -59,7 +82,7 @@ pub fn main() {
         } else {
             canvas.set_draw_color(Color::RED);
         }
-        let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
+        let _ = canvas.fill_rect(Rect::new(318, 352, 30, 30));
 
         // DOWN light
         if lights.lights_down {
@@ -67,7 +90,7 @@ pub fn main() {
         } else {
             canvas.set_draw_color(Color::RED);
         }
-        let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
+        let _ = canvas.fill_rect(Rect::new(452, 352, 30, 30));
 
         // LEFT light
         if lights.lights_left {
@@ -75,7 +98,7 @@ pub fn main() {
         } else {
             canvas.set_draw_color(Color::RED);
         }
-        let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
+        let _ = canvas.fill_rect(Rect::new(452, 218, 30, 30));
         let copy_cars = cars_vec.clone();
         for car in &mut cars_vec {
             canvas.set_draw_color(car.color);
