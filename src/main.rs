@@ -5,7 +5,6 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use sdl2::rect::{ Point, Rect };
-use std::time::Duration;
 
 pub fn main() {
     let sdl_context = sdl2::init().unwrap();
@@ -17,7 +16,7 @@ pub fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-
+    
     canvas.present();
     let mut event_pump = sdl_context.event_pump().unwrap();
     let mut cars_vec: Vec<Car> = Vec::new();
@@ -26,6 +25,7 @@ pub fn main() {
         lights_down: false,
         lights_left: false,
         lights_right: false,
+        time: Instant::now(),
     };
     'running: loop {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
@@ -39,13 +39,12 @@ pub fn main() {
         let _ = canvas.draw_line(Point::new(0, 300), Point::new(800, 300));
         let _ = canvas.draw_line(Point::new(0, 250), Point::new(800, 250));
         let _ = canvas.draw_line(Point::new(0, 350), Point::new(800, 350));
-        
 
         let copy_cars = cars_vec.clone();
-        traffic_lights_sys(&lights,&copy_cars);
+        traffic_lights_sys(&mut lights, &copy_cars);
 
-        lights.lights_down = true;
-        lights.lights_top = true;
+        // lights.lights_down = true;
+        // lights.lights_top = true;
 
         // Draw the TOP light
         if lights.lights_top {
@@ -61,7 +60,8 @@ pub fn main() {
         } else {
             canvas.set_draw_color(Color::RED);
         }
-        let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
+        let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
+
 
         // Draw the DOWN light
         if lights.lights_down {
@@ -77,7 +77,7 @@ pub fn main() {
         } else {
             canvas.set_draw_color(Color::RED);
         }
-        let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
+        let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
 
         for car in &mut cars_vec {
             canvas.set_draw_color(car.color);

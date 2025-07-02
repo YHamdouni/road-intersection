@@ -1,5 +1,6 @@
+pub use std::time::{ Duration, Instant };
 use rand::Rng;
-use sdl2::pixels::Color;
+use sdl2::{ pixels::Color };
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Direction {
@@ -238,6 +239,7 @@ pub struct TrafficLights {
     pub lights_down: bool,
     pub lights_left: bool,
     pub lights_right: bool,
+    pub time: Instant,
 }
 pub fn traffic_lights(car: &mut Car, lights: &TrafficLights) {
     if
@@ -252,6 +254,50 @@ pub fn traffic_lights(car: &mut Car, lights: &TrafficLights) {
     }
 }
 
-pub fn traffic_lights_sys(lights: &TrafficLights, cars_iter: &Vec<Car>) {
-    
+pub fn traffic_lights_sys(lights: &mut TrafficLights, cars_iter: &Vec<Car>) {
+    let (mut cpt_top, mut cpt_down, mut cpt_left, mut cpt_right) = (0, 0, 0, 0);
+
+    for car in cars_iter {
+        if car.dir == Direction::Down && car.y >= 360 {
+            cpt_down += 1;
+        } else if car.dir == Direction::Top && car.y <= 210 {
+            cpt_top += 1;
+        } else if car.dir == Direction::Right && car.x <= 310 {
+            cpt_right += 1;
+        } else if car.dir == Direction::Left && car.x >= 460 {
+            cpt_left += 1;
+        }
+    }
+    let mut _max_value: i32 = cpt_down;
+    let mut current_dir = Direction::Down;
+
+    if cpt_top > _max_value {
+        _max_value = cpt_top;
+        current_dir = Direction::Top;
+    }
+
+    if cpt_left > _max_value {
+        _max_value = cpt_left;
+        current_dir = Direction::Left;
+    }
+
+    if cpt_right > _max_value {
+        _max_value = cpt_right;
+        current_dir = Direction::Right;
+    }
+
+    if lights.time.elapsed() >= Duration::new(7, 0) {
+        lights.lights_down = false;
+        lights.lights_top = false;
+        lights.lights_left = false;
+        lights.lights_right = false;
+
+        match current_dir {
+            Direction::Down => lights.lights_down = true,
+            Direction::Top => lights.lights_top = true,
+            Direction::Left => lights.lights_left = true,
+            Direction::Right => lights.lights_right = true,
+        }
+        lights.time = Instant::now();
+    }
 }
