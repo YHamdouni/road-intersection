@@ -108,6 +108,37 @@ impl Car {
             _ => Color::RGB(160, 32, 240),
         }
     }
+
+    pub fn next_car(&self, cars_iter: &Vec<Car>) -> bool {
+        const SAFE_DISTANCE: i32 = 45;
+        for other_car in cars_iter {
+            if other_car.dir == self.dir {
+                match self.dir {
+                    Direction::Top => {
+                        if other_car.y > self.y && other_car.y - self.y <= SAFE_DISTANCE {
+                            return true;
+                        }
+                    }
+                    Direction::Down => {
+                        if other_car.y < self.y && self.y - other_car.y <= SAFE_DISTANCE {
+                            return true;
+                        }
+                    }
+                    Direction::Left => {
+                        if other_car.x < self.x && self.x - other_car.x <= SAFE_DISTANCE {
+                            return true;
+                        }
+                    }
+                    Direction::Right => {
+                        if other_car.x > self.x && other_car.x - self.x <= SAFE_DISTANCE {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        false
+    }
 }
 pub fn get_last_car_dir(cars_vec: &mut Vec<Car>, dir: Direction) -> Option<Car> {
     cars_vec
@@ -124,7 +155,7 @@ pub fn push_car(
     check_x: Option<i32>,
     dir: Direction
 ) {
-    const MAX_CARS: usize = 8;
+    const MAX_CARS: usize = 20;
 
     let can_push = if cars_vec.is_empty() {
         true
@@ -209,9 +240,18 @@ pub struct TrafficLights {
     pub lights_right: bool,
 }
 pub fn traffic_lights(car: &mut Car, lights: &TrafficLights) {
-    if car.dir == Direction::Down && car.y == 360 && lights.lights_down {
+    if
+        (!lights.lights_down && car.dir == Direction::Down && car.y == 360) ||
+        (!lights.lights_top && car.dir == Direction::Top && car.y == 210) ||
+        (!lights.lights_right && car.dir == Direction::Right && car.x == 310) ||
+        (!lights.lights_left && car.dir == Direction::Left && car.x == 460)
+    {
         car.moving = false;
     } else {
         car.moving = true;
     }
+}
+
+pub fn traffic_lights_sys(lights: &TrafficLights, cars_iter: &Vec<Car>) {
+    
 }

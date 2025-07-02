@@ -39,40 +39,54 @@ pub fn main() {
         let _ = canvas.draw_line(Point::new(0, 300), Point::new(800, 300));
         let _ = canvas.draw_line(Point::new(0, 250), Point::new(800, 250));
         let _ = canvas.draw_line(Point::new(0, 350), Point::new(800, 350));
-        // lights
+        
 
-        // if lights.lights_top {
-        //     canvas.set_draw_color(Color::GREEN);
-        //     let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
-        // }
-        // if lights.lights_right {
-        //     canvas.set_draw_color(Color::GREEN);
-        //     let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
-        // }
-        // if lights.lights_down {
-        //     canvas.set_draw_color(Color::GREEN);
-        //     let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
-        // }
-        // if lights.lights_left {
-        //     canvas.set_draw_color(Color::GREEN);
-        //     let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
-        // }
-        // else {
-            canvas.set_draw_color(Color::RED);
-            let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
-            let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
-            let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
-            let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
-        // }
+        let copy_cars = cars_vec.clone();
+        traffic_lights_sys(&lights,&copy_cars);
 
         lights.lights_down = true;
-        // canvas.set_draw_color(Color::BLUE);
+        lights.lights_top = true;
+
+        // Draw the TOP light
+        if lights.lights_top {
+            canvas.set_draw_color(Color::GREEN);
+        } else {
+            canvas.set_draw_color(Color::RED);
+        }
+        let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
+
+        // Draw the RIGHT light
+        if lights.lights_right {
+            canvas.set_draw_color(Color::GREEN);
+        } else {
+            canvas.set_draw_color(Color::RED);
+        }
+        let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
+
+        // Draw the DOWN light
+        if lights.lights_down {
+            canvas.set_draw_color(Color::GREEN);
+        } else {
+            canvas.set_draw_color(Color::RED);
+        }
+        let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
+
+        // Draw the LEFT light
+        if lights.lights_left {
+            canvas.set_draw_color(Color::GREEN);
+        } else {
+            canvas.set_draw_color(Color::RED);
+        }
+        let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
+
         for car in &mut cars_vec {
             canvas.set_draw_color(car.color);
-            // traffic_lights(car, &mut lights);
-            // if car.moving {
-                car.move_car();
-            // }
+            traffic_lights(car, &mut lights);
+            if car.moving {
+                if !car.next_car(&copy_cars) {
+                    car.move_car();
+                }
+            }
             if !car.turned {
                 car.redirect();
             }
