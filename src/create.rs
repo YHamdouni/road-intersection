@@ -15,6 +15,7 @@ pub struct Car {
     pub dir: Direction,
     pub color: Color,
     pub turned: bool,
+    pub moving: bool,
 }
 impl Car {
     pub fn new(x: i32, y: i32, dir: Direction, color: Color) -> Car {
@@ -24,6 +25,7 @@ impl Car {
             dir: dir,
             color,
             turned: false,
+            moving: false,
         }
     }
     pub fn move_car(&mut self) {
@@ -186,12 +188,30 @@ pub fn key_r(cars_vec: &mut Vec<Car>) {
 
 pub fn can_move(cars_vec: &mut Vec<Car>, new_car: Car) -> bool {
     match new_car.dir {
-        Direction::Top=>{
-            let is = cars_vec.iter().rev().find(|car| car == car).cloned();
+        Direction::Top => {
+            let _is = cars_vec
+                .iter()
+                .rev()
+                .find(|car| car == car)
+                .cloned();
         }
-        Direction::Down=>{}
-        Direction::Left=>{}
-        Direction::Right=>{}
+        Direction::Down => {}
+        Direction::Left => {}
+        Direction::Right => {}
     }
     false
+}
+
+pub struct TrafficLights {
+    pub lights_top: bool,
+    pub lights_down: bool,
+    pub lights_left: bool,
+    pub lights_right: bool,
+}
+pub fn traffic_lights(car: &mut Car, lights: &TrafficLights) {
+    if car.dir == Direction::Down && car.y == 360 && lights.lights_down {
+        car.moving = false;
+    } else {
+        car.moving = true;
+    }
 }

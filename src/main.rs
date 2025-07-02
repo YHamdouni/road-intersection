@@ -4,7 +4,7 @@ extern crate sdl2;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
-use sdl2::rect::{Point, Rect};
+use sdl2::rect::{ Point, Rect };
 use std::time::Duration;
 
 pub fn main() {
@@ -21,6 +21,12 @@ pub fn main() {
     canvas.present();
     let mut event_pump = sdl_context.event_pump().unwrap();
     let mut cars_vec: Vec<Car> = Vec::new();
+    let mut lights = TrafficLights {
+        lights_top: false,
+        lights_down: false,
+        lights_left: false,
+        lights_right: false,
+    };
     'running: loop {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
@@ -34,17 +40,40 @@ pub fn main() {
         let _ = canvas.draw_line(Point::new(0, 250), Point::new(800, 250));
         let _ = canvas.draw_line(Point::new(0, 350), Point::new(800, 350));
         // lights
-        canvas.set_draw_color(Color::RED);
-        let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
-        let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
-        let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
-        let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
 
-        canvas.set_draw_color(Color::BLUE);
+        // if lights.lights_top {
+        //     canvas.set_draw_color(Color::GREEN);
+        //     let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
+        // }
+        // if lights.lights_right {
+        //     canvas.set_draw_color(Color::GREEN);
+        //     let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
+        // }
+        // if lights.lights_down {
+        //     canvas.set_draw_color(Color::GREEN);
+        //     let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
+        // }
+        // if lights.lights_left {
+        //     canvas.set_draw_color(Color::GREEN);
+        //     let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
+        // }
+        // else {
+            canvas.set_draw_color(Color::RED);
+            let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
+            let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
+            let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
+            let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
+        // }
+
+        lights.lights_down = true;
+        // canvas.set_draw_color(Color::BLUE);
         for car in &mut cars_vec {
             canvas.set_draw_color(car.color);
-            car.move_car();
-            if !car.turned{
+            // traffic_lights(car, &mut lights);
+            // if car.moving {
+                car.move_car();
+            // }
+            if !car.turned {
                 car.redirect();
             }
             let _ = canvas.fill_rect(Rect::new(car.x, car.y, 30, 30));
@@ -52,39 +81,22 @@ pub fn main() {
         cars_vec.retain(|car| car.y <= 630 && car.y >= -30 && car.x <= 830 && car.x >= -30);
         for event in event_pump.poll_iter() {
             match event {
-                Event::Quit { .. }
-                | Event::KeyDown {
-                    keycode: Some(Keycode::Escape),
-                    ..
-                } => break 'running,
-                Event::KeyDown {
-                    keycode: Some(Keycode::UP),
-                    ..
-                } => {
+                Event::Quit { .. } | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
+                    break 'running;
+                }
+                Event::KeyDown { keycode: Some(Keycode::UP), .. } => {
                     key_up(&mut cars_vec);
                 }
-                Event::KeyDown {
-                    keycode: Some(Keycode::DOWN),
-                    ..
-                } => {
+                Event::KeyDown { keycode: Some(Keycode::DOWN), .. } => {
                     key_down(&mut cars_vec);
                 }
-                Event::KeyDown {
-                    keycode: Some(Keycode::LEFT),
-                    ..
-                } => {
+                Event::KeyDown { keycode: Some(Keycode::LEFT), .. } => {
                     key_left(&mut cars_vec);
                 }
-                Event::KeyDown {
-                    keycode: Some(Keycode::RIGHT),
-                    ..
-                } => {
+                Event::KeyDown { keycode: Some(Keycode::RIGHT), .. } => {
                     key_right(&mut cars_vec);
                 }
-                Event::KeyDown {
-                    keycode: Some(Keycode::R),
-                    ..
-                } => {
+                Event::KeyDown { keycode: Some(Keycode::R), .. } => {
                     key_r(&mut cars_vec);
                 }
                 _ => {}
