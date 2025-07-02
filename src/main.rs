@@ -1,5 +1,7 @@
-mod create;
-pub use create::*;
+mod car;
+mod lights;
+pub use car::*;
+pub use lights::*;
 extern crate sdl2;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
@@ -16,7 +18,7 @@ pub fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-    
+
     canvas.present();
     let mut event_pump = sdl_context.event_pump().unwrap();
     let mut cars_vec: Vec<Car> = Vec::new();
@@ -26,6 +28,8 @@ pub fn main() {
         lights_left: false,
         lights_right: false,
         time: Instant::now(),
+        current_direction: Direction::Right,
+        state: false,
     };
     'running: loop {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
@@ -43,10 +47,7 @@ pub fn main() {
         let copy_cars = cars_vec.clone();
         traffic_lights_sys(&mut lights, &copy_cars);
 
-        // lights.lights_down = true;
-        // lights.lights_top = true;
-
-        // Draw the TOP light
+        // TOP light
         if lights.lights_top {
             canvas.set_draw_color(Color::GREEN);
         } else {
@@ -54,7 +55,7 @@ pub fn main() {
         }
         let _ = canvas.draw_rect(Rect::new(318, 218, 30, 30));
 
-        // Draw the RIGHT light
+        // RIGHT light
         if lights.lights_right {
             canvas.set_draw_color(Color::GREEN);
         } else {
@@ -62,8 +63,7 @@ pub fn main() {
         }
         let _ = canvas.draw_rect(Rect::new(318, 352, 30, 30));
 
-
-        // Draw the DOWN light
+        // DOWN light
         if lights.lights_down {
             canvas.set_draw_color(Color::GREEN);
         } else {
@@ -71,7 +71,7 @@ pub fn main() {
         }
         let _ = canvas.draw_rect(Rect::new(452, 352, 30, 30));
 
-        // Draw the LEFT light
+        // LEFT light
         if lights.lights_left {
             canvas.set_draw_color(Color::GREEN);
         } else {
