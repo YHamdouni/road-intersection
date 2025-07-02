@@ -44,9 +44,7 @@ pub fn main() {
         let _ = canvas.draw_line(Point::new(0, 250), Point::new(800, 250));
         let _ = canvas.draw_line(Point::new(0, 350), Point::new(800, 350));
 
-        let copy_cars = cars_vec.clone();
-        traffic_lights_sys(&mut lights, &copy_cars);
-
+        traffic_lights_sys(&mut lights);
         // TOP light
         if lights.lights_top {
             canvas.set_draw_color(Color::GREEN);
@@ -78,7 +76,7 @@ pub fn main() {
             canvas.set_draw_color(Color::RED);
         }
         let _ = canvas.draw_rect(Rect::new(452, 218, 30, 30));
-
+        let copy_cars = cars_vec.clone();
         for car in &mut cars_vec {
             canvas.set_draw_color(car.color);
             traffic_lights(car, &mut lights);

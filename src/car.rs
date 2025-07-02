@@ -156,7 +156,7 @@ pub fn push_car(
     check_x: Option<i32>,
     dir: Direction
 ) {
-    const MAX_CARS: usize = 200;
+    const MAX_CARS: usize = 8;
 
     let can_push = if cars_vec.is_empty() {
         true
@@ -233,4 +233,3 @@ pub fn can_move(cars_vec: &mut Vec<Car>, new_car: Car) -> bool {
     }
     false
 }
-

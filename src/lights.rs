@@ -1,4 +1,4 @@
-use crate::{Car,Direction};
+use crate::{ Car, Direction };
 pub use std::time::{ Duration, Instant };
 
 pub struct TrafficLights {
@@ -23,8 +23,8 @@ pub fn traffic_lights(car: &mut Car, lights: &TrafficLights) {
     }
 }
 
-pub fn traffic_lights_sys(lights: &mut TrafficLights, _cars_iter: &Vec<Car>) {
-    let green_duration = Duration::new(7, 0);
+pub fn traffic_lights_sys(lights: &mut TrafficLights) {
+    let green_duration = Duration::new(3, 0);
     let off_duration = Duration::new(0, 500000000);
 
     let elapsed = lights.time.elapsed();
