@@ -69,9 +69,10 @@ Rust installed (rustup)
 SDL2 (bindings used: sdl2)
 
 Dependencies installed via cargo
-
+```
 cargo build
 cargo run
+```
 ## 🎨 Bonus Features (Optional)
 Vehicle animations and sprite rendering.
 
